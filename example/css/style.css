@@ -15,9 +15,6 @@ footer{
 section{
 	display: table;
 	width: 100%;
-	height: -moz-calc(100% - (135px + 120px));
-    height: -webkit-calc(100% - (135px + 120px));
-    height: calc(100% - (135px + 120px));
 }
 .container-fluid{
 	vertical-align: middle;
@@ -25,34 +22,17 @@ section{
 	display: table-cell;
 	font-size: 24px;
 }
-#inputNames{
-	width: 350px;
-    height: 50px;
-    padding: 10px;
-    font-size: 16px;
-    z-index: 99;
-}
-.inputHolder,.listHolder{
-    width: 350px;	
-    height: auto;
+
+.inputHolder{
+    width: 450px;	
+    height: 70px;
     margin: 0 60px;
+    border: 1px solid;
 }
-.listHolder{
-    max-height: 190px;
-    overflow-y: auto;
-    border: 1px solid #E4DADA;
-    margin-left: 62px;
-    width: 347px;
-}
-#textClear{
-	margin-bottom: -10px;
-    margin-left: -34px;
-    cursor: pointer;
-    z-index: 999;
-}
+
+
 .listHolder li{
 	background-color: #F0F0F0;
-    margin-left: 2px;
     width: auto;
     padding: 5px 10px;
     cursor: pointer;
