@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Auto Fill Input Field</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="js/lib/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/inputAutofill.js"></script>
+</head>
+<body>
+	<header>Autofill Application</header>
+	    <section>
+	    	<div class="container-fluid">
+	    	  <!-- Auto fill Input text field -->
+	    	  <div class="inputHolder">
+	    	  	<input type="text" id="inputNames" placeholder="Enter Name" onkeyup="checkInputValue(this)" onclick="checkPreviousvalue()">
+	    	  	<img src="../images/cross_btn.png" width="30px" id="textClear" onclick="clearFields()">
+	    	  </div>    	 
+	    	  <div class="listHolder" id="listHolderDiv"></div>	
+	    	</div>
+	    </section>
+	<footer>By Surya Raj on 18 March 2016</footer>
+</body>
+</html>
