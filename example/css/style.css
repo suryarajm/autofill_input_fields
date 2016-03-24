@@ -1,0 +1,40 @@
+header,footer{
+	width: 96%;
+    padding: 50px 2%;
+    background-color: #CAE8F2;    
+}
+header{
+    font-size: 30px;
+    top: 0;	
+}
+footer{
+	font-size: 20px;
+	bottom: 0;
+	position: fixed;
+}
+section{
+	display: table;
+	width: 100%;
+}
+.container-fluid{
+	vertical-align: middle;
+	text-align: center;
+	display: table-cell;
+	font-size: 24px;
+}
+
+.inputHolder{
+    width: 450px;	
+    height: 70px;
+    margin: 0 60px;
+    border: 1px solid;
+}
+
+
+.listHolder li{
+	background-color: #F0F0F0;
+    width: auto;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: left;
+}

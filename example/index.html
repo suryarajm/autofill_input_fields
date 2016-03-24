@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Auto Fill Input Field</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="js/libs/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="js/autofill_input_field.js"></script>
+	<script type="text/javascript">
+     	var sectionHeight = window.innerHeight-255+"px";
+     	function styleSection(){
+     		$("section").css("height",sectionHeight);
+     	}
+     	
+	</script>
+</head>
+<body onload="styleSection()">
+	<header>Autofill Application</header>
+	    <section>	       
+	    	<div class="container-fluid">
+	    	  <!--Auto fill Input text field container-->
+	    	  <div class="inputHolder">
+	    	    <!--Auto fill Input text field-->
+	    	  	<input type="text" id="autofillInput" placeholder="Enter Text" onkeyup="listMatchedSavedDatas(this)" onclick="listPreviousInputs(this)">
+                <!--Input text field clear button-->
+	    	  	<button id="textClear" onclick="clearFields()"><img src="images/cross_btn.png" width="30px"></button>
+	    	  </div>
+	    	  <!-- option list container -->    	 
+	    	  <div class="listHolder" id="listHolderDiv"></div>	
+	    	</div>
+	    </section>
+	<footer>By Surya Raj on 18 March 2016</footer>
+</body>
+</html>
