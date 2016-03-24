@@ -6,7 +6,7 @@ $(document).ready(function(){
 	inputHolderwidth = $(".inputHolder").css("width");
 	listHolderwidth = parseInt(inputHolderwidth) - 0;
 	inputHolderMargin = $(".inputHolder").css("margin-left");
-	alert(inputHolderMargin);
+	
 
 	/*styling autofill input field*/
 	$("#autofillInput").css({
