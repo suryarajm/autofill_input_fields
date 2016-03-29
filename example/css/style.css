@@ -31,10 +31,6 @@ section{
 }
 
 
-.listHolder li{
-	background-color: #F0F0F0;
-    width: auto;
-    padding: 5px 10px;
-    cursor: pointer;
-    text-align: left;
+#currentli{
+    background-color: #E3E4E5 !important;
 }

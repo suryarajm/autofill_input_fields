@@ -37,12 +37,28 @@ $(document).ready(function(){
 	    "overflow-y":"auto",
 	    "margin-left":inputHolderMargin,
 	    "height": "auto",
-	});   
+	}); 
+    
+    /*li style*/
+    $("li").css({
+		"background-color": "#F0F0F0",
+	    "width": "auto",
+	    "padding": "5px 10px",
+	    "cursor": "pointer",
+	    "text-align": "left"
+    });
+
+	/*hover li style*/
+	$("#currentli").css("background-color","#E3E4E5 !important");
+
+	
 });
 
 /*list matched datas from saved list*/
 function listMatchedSavedDatas(inputField){
-	var dataList = "";
+
+	setTimeout(function(){
+		var dataList = "";
 	var currentElement = "";
 	var listElement = "";
 	var highlitespanElement = "";
@@ -55,15 +71,11 @@ function listMatchedSavedDatas(inputField){
 	}
 	
 	if(enteredValue.length >= 2){ /*listing suggestions from saved datas when entering atleast 2 characters*/
-			dataList = getExternalData(); 
-			console.log("dataList: "+JSON.stringify(dataList));
-			console.log("enteredValue: "+enteredValue);
+			dataList = getExternalData();
 	        if(dataList.names != null){
 	        	for (var i = 0; i < dataList.names.length; i++) {
 	        		currentElement = dataList.names[i];
-	        		console.log("currentElement: "+currentElement);
-	        		if(currentElement.indexOf(enteredValue) > -1 || currentElement.toLowerCase().indexOf(enteredValue) > -1 || currentElement.toUpperCase().indexOf(enteredValue) > -1){        		  
-	        			 console.log("list: "+currentElement);	        			 
+	        		if(currentElement.indexOf(enteredValue) > -1 || currentElement.toLowerCase().indexOf(enteredValue) > -1 || currentElement.toUpperCase().indexOf(enteredValue) > -1){
                          var styledcurrentElement = highlightMatchedCharacters(currentElement,enteredValue);	        			
 	        			 listElement = document.createElement("li");
 	        			 listHolderElement.appendChild(listElement);
@@ -72,6 +84,7 @@ function listMatchedSavedDatas(inputField){
 	        			 listElement.innerHTML = listText;
 	        		}
 	        	}
+	        	$("#listHolderDiv").children('li:first-child').attr("id","currentli");
 	        }
 
 	}
@@ -83,6 +96,24 @@ function listMatchedSavedDatas(inputField){
 	$(".namesOptionList").click(function(){	
 		selectTextFromList(this);
 	});
+
+	/*li on hover styling*/ 
+	$(".namesOptionList").hover(function(){
+		$(this).attr("id","currentli");
+	},function(){
+		$(this).removeAttr("id");
+	});   	
+    
+    /*hover li style*/
+    $("li").css({
+		"background-color": "#F0F0F0",
+	    "width": "auto",
+	    "padding": "5px 10px",
+	    "cursor": "pointer",
+	    "text-align": "left"
+    });
+}, 500);	
+	
 }
 
 
@@ -124,7 +155,6 @@ function highlightMatchedCharacters(currentElement,enteredValue){
     highliteEndIndex = highliteStartIndex + enteredValue.length;
     for(var i = highliteStartIndex; i < highliteEndIndex; i++){
         currentCharacter = currentElement.charAt(i);
-        console.log("currentCharacter: "+currentCharacter);
     	charactersForStyle = charactersForStyle + currentCharacter;
     }
     styledCharacter = "<strong>"+charactersForStyle+"</strong>";
@@ -159,17 +189,36 @@ function listPreviousInputs(inputField){
 				  	listElement = document.createElement("li");
 				    listHolderElement.appendChild(listElement);
 				    listElement.setAttribute("class", "namesOptionList");
-				    listElement.appendChild(document.createTextNode(previousSelection));
+				    listElement.appendChild(document.createTextNode(previousSelection));		    
 							
 				}
-			}			
+			}	
+			$("#listHolderDiv").children('li:first-child').attr("id","currentli");		
 	    } 
 	}
 	 
 
 	$(".namesOptionList").click(function(){	
 		selectTextFromList(this);
-	});    
+	}); 
+
+	/*li on hover styling*/ 
+	$(".namesOptionList").hover(function(){
+		$(this).attr("id","currentli");
+	},function(){
+		$(this).removeAttr("id");
+	}); 
+
+	/*li style*/
+	$("li").css({
+		"background-color": "#F0F0F0",
+	    "width": "auto",
+	    "padding": "5px 10px",
+	    "cursor": "pointer",
+	    "text-align": "left"
+    });
+
+	  
 }
 
 /*select a text from the listed options*/
@@ -212,4 +261,117 @@ function clearFields(){
 		$(".namesOptionList").remove();
 	}
 }
+
+/*
+*keyboard integration
+*/
+document.onkeydown = function(event){    
+    if(event.keyCode == 38){ //up arrow
+    	//alert("up");
+        if($("#currentli").length > 0){
+        	upArrowHandler(document.getElementById("currentli"));
+        }
+        else if($("#listHolderDiv li").length > 0){
+        	upArrowHandler($("#listHolderDiv").children(":eq(0)"));
+        }
+        else {
+        	currentliElement = "";
+        }
+        return false;
+    } 
+    else if(event.keyCode == 40){ //down arrow
+    	if($("#currentli").length > 0){
+        	downArrowHandler(document.getElementById("currentli"));
+        }
+        else if($("#listHolderDiv li").length > 0){
+        	downArrowHandler($("#listHolderDiv").children(":eq(0)"));
+        }
+        else {
+        	currentliElement = "";
+        }
+        return false;
+    }
+    else if(event.keyCode == 13){ //enter key
+    	 enterKeyHandler();
+       }
+    else if(event.keyCode == 27){ //escape key
+        clearFields();
+    }
+};
+
+$("li").css({
+		"background-color": "#F0F0F0",
+	    "width": "auto",
+	    "padding": "5px 10px",
+	    "cursor": "pointer",
+	    "text-align": "left"
+    });
+
+
+/*Up arrow handler*/
+function upArrowHandler(currentliElement){
+	if(currentliElement != "" && currentliElement != null && currentliElement !== "undefined"){
+        	previousOfcurrentliElement = $(currentliElement).prev('li');
+        	if($(previousOfcurrentliElement).is('li')){
+        		$(currentliElement).removeAttr("id");
+        		$(previousOfcurrentliElement).attr("id","currentli");
+        		var newpos = $(previousOfcurrentliElement).offset().top - $(currentliElement).offset().top;    
+                $('#listHolderDiv').scrollTop(newpos);
+        	}
+        	else{
+        		$(currentliElement).removeAttr("id");
+        		var lastLi = $("#listHolderDiv li").last();
+        		$(lastLi).attr("id","currentli");
+        		var newpos = $(lastLi).offset().top - $(currentliElement).offset().top;    
+                $('#listHolderDiv').scrollTop(newpos);
+        	}
+        }
+        $("#currentli").focus();
+
+}
+
+/*down arrow handler*/
+var m = 0;
+function downArrowHandler(currentliElement){
+	
+    if(currentliElement != "" && currentliElement != null && currentliElement !== "undefined"){
+
+       	nextOfCurrentliElement = $(currentliElement).next('li');
+
+       	  if($(nextOfCurrentliElement).is('li')){
+       	    $(window).click();
+       	    console.log("m:"+(m++));
+       		$(currentliElement).removeAttr("id");
+       		$(nextOfCurrentliElement).attr("id","currentli");
+       		var newpos = $(nextOfCurrentliElement).offset().top - $(currentliElement).offset().top;    
+            $('#listHolderDiv').scrollTop(newpos);
+       	}
+       	else{   
+       	    $(currentliElement).removeAttr("id"); 
+       	    var firtstLi = $("#listHolderDiv").children(":eq(0)");   		
+        	$(firtstLi).attr("id","currentli");
+        	var newpos = $(firtstLi).offset().top - $(currentliElement).offset().top;    
+            $('#listHolderDiv').scrollTop(newpos);
+       	}
+       	
+    }
+
+}
+
+function enterKeyHandler(){	
+	if($("#currentli").length > 0){
+		selectTextFromList(document.getElementById("currentli"));
+	}
+    else{
+        selectTextFromList($("#listHolderDiv").children(":eq(0)"));
+    }
+}	
+
+
+
+
+
+
+
+
 
