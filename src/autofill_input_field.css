@@ -1,0 +1,34 @@
+#autofillInput{
+	width: 75%;
+	height: 98%;
+	padding: 0% 5%;
+	font-size: 16px;
+    z-index: 99;
+	float:left;
+	border:none;
+	outline-offset: 0px;
+    outline: -webkit-focus-ring-color 0;
+}
+
+/*styling clear button*/
+#textClear{
+	width: 15%;
+	height: 100%;
+	float:left;
+	cursor:pointer;
+	border:none;
+}
+
+/*li style*/
+li{
+	background-color: #F0F0F0;
+	width: auto;
+	padding: 5px 10px;
+	cursor: pointer;
+	text-align: left;
+}
+
+/*selected li*/
+#currentli{
+	background-color: #E3E4E5 !important;
+}
