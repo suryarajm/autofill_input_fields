@@ -5,29 +5,7 @@ $(document).ready(function(){
 	previousInputCount = 0;
 	inputHolderwidth = $(".inputHolder").css("width");
 	listHolderwidth = parseInt(inputHolderwidth) - 0;
-	inputHolderMargin = $(".inputHolder").css("margin-left");
-
-	/*styling autofill input field*/
-	$("#autofillInput").css({
-		"width": "75%",
-	    "height": "98%",
-	    "padding": "0% 5%",
-	    "font-size": "16px",
-	    "z-index": "99",
-	    "float":"left",
-	    "border":"none",
-	    "outline-offset": "0px",
-        "outline": "-webkit-focus-ring-color 0"
-	});
-
-	/*styling clear button*/
-    $("#textClear").css({
-		"width": "15%",
-	    "height": "100%",
-	    "float":"left",
-	    "cursor":"pointer",
-	    "border":"none"
-	});
+	inputHolderMargin = $(".inputHolder").css("margin-left");	
 
 	/*styling list container*/
 	$(".listHolder").css({
@@ -36,99 +14,69 @@ $(document).ready(function(){
 	    "overflow-y":"auto",
 	    "margin-left":inputHolderMargin,
 	    "height": "auto",
-	});
 	}); 
-    
-    /*li style*/
-    $("li").css({
-		"background-color": "#F0F0F0",
-	    "width": "auto",
-	    "padding": "5px 10px",
-	    "cursor": "pointer",
-	    "text-align": "left"
-    });
-
-	/*hover li style*/
-	$("#currentli").css("background-color","#E3E4E5 !important");
 });
 
 /*list matched datas from saved list*/
 function listMatchedSavedDatas(inputField){
-
-
 	setTimeout(function(){
 		var dataList = "";
-	var currentElement = "";
-	var listElement = "";
-	var highlitespanElement = "";
-	var normalspanElement = "";
-	var listHolderElement = document.getElementById("listHolderDiv");
-	var enteredValue = inputField.value;
-	/*remove previous listed options*/
-	if($(".namesOptionList").length){
+		var currentElement = "";
+		var listElement = "";
+		var highlitespanElement = "";
+		var normalspanElement = "";
+		var listHolderElement = document.getElementById("listHolderDiv");
+		var enteredValue = inputField.value;
+		
+		/*remove previous listed options*/
+		if($(".namesOptionList").length){
 			$(".namesOptionList").remove();
-	}
-	
-	if(enteredValue.length >= 2){ /*listing suggestions from saved datas when entering atleast 2 characters*/
-
-			dataList = getExternalData(); 
-			console.log("dataList: "+JSON.stringify(dataList));
-			console.log("enteredValue: "+enteredValue);
-	        if(dataList.names != null){
-	        	for (var i = 0; i < dataList.names.length; i++) {
-	        		currentElement = dataList.names[i];
-	        		console.log("currentElement: "+currentElement);
-	        		if(currentElement.indexOf(enteredValue) > -1 || currentElement.toLowerCase().indexOf(enteredValue) > -1 || currentElement.toUpperCase().indexOf(enteredValue) > -1){        		  
-	        			 console.log("list: "+currentElement);	        			 
-
+		}
+		
+		if(enteredValue.length >= 2){ /*listing suggestions from saved datas when entering atleast 2 characters*/
 			dataList = getExternalData();
-	        if(dataList.names != null){
-	        	for (var i = 0; i < dataList.names.length; i++) {
-	        		currentElement = dataList.names[i];
-	        		if(currentElement.indexOf(enteredValue) > -1 || currentElement.toLowerCase().indexOf(enteredValue) > -1 || currentElement.toUpperCase().indexOf(enteredValue) > -1){
+		    if(dataList.names != null){
+		       	for (var i = 0; i < dataList.names.length; i++) {
+		       		currentElement = dataList.names[i];
+		       		if(currentElement.indexOf(enteredValue) > -1 || currentElement.toLowerCase().indexOf(enteredValue) > -1 || currentElement.toUpperCase().indexOf(enteredValue) > -1){
+	                    var styledcurrentElement = highlightMatchedCharacters(currentElement,enteredValue);	        			
+		        		listElement = document.createElement("li");
+		        		listHolderElement.appendChild(listElement);
+		        		listElement.setAttribute("class", "namesOptionList");	        		    
+		        		var listText = "<span class='listTextClass'>"+styledcurrentElement+"</span>";
+		        		listElement.innerHTML = listText;
+		        	}
+		        }
+		        $("#listHolderDiv").children('li:first-child').attr("id","currentli");
+		    }
 
-                         var styledcurrentElement = highlightMatchedCharacters(currentElement,enteredValue);	        			
-	        			 listElement = document.createElement("li");
-	        			 listHolderElement.appendChild(listElement);
-	        			 listElement.setAttribute("class", "namesOptionList");	        		    
-	        			 var listText = "<span class='listTextClass'>"+styledcurrentElement+"</span>";
-	        			 listElement.innerHTML = listText;
-	        		}
-	        	}
+		}
+		else{ /*listing previous inputs before entering 2 characters*/
+			listPreviousInputs(inputField);
+		}
+	        
+	    /*selecting text from options*/
+		$(".namesOptionList").click(function(){	
+			selectTextFromList(this);
+		});
 
-	        	$("#listHolderDiv").children('li:first-child').attr("id","currentli");
-
-	        }
-
-	}
-	else{ /*listing previous inputs before entering 2 characters*/
-		listPreviousInputs(inputField);
-	}
-        
-    /*selecting text from options*/
-	$(".namesOptionList").click(function(){	
-		selectTextFromList(this);
-	});
-
-
-	/*li on hover styling*/ 
-	$(".namesOptionList").hover(function(){
-		$(this).attr("id","currentli");
-	},function(){
-		$(this).removeAttr("id");
-	});   	
-    
-    /*hover li style*/
-    $("li").css({
-		"background-color": "#F0F0F0",
-	    "width": "auto",
-	    "padding": "5px 10px",
-	    "cursor": "pointer",
-	    "text-align": "left"
-    });
-}, 500);	
-	
-
+		/*li on hover action*/ 
+		$(".namesOptionList").hover(function(){
+			if($("#currentli").length <= 0){
+				$(this).attr("id","currentli");
+			}
+			else{
+				$(this).css("background-color","rgb(229, 233, 237)");
+			}		
+		},function(){
+		   if($(this).attr("id") == "currentli"){
+		   		$(this).removeAttr("id");
+		   }
+		   else{
+		   	   $(this).css("background-color","#F0F0F0");
+		   }		
+		});  
+    }, 500);	
 }
 
 
@@ -170,7 +118,6 @@ function highlightMatchedCharacters(currentElement,enteredValue){
     highliteEndIndex = highliteStartIndex + enteredValue.length;
     for(var i = highliteStartIndex; i < highliteEndIndex; i++){
         currentCharacter = currentElement.charAt(i);
-
     	charactersForStyle = charactersForStyle + currentCharacter;
     }
     styledCharacter = "<strong>"+charactersForStyle+"</strong>";
@@ -205,15 +152,11 @@ function listPreviousInputs(inputField){
 				  	listElement = document.createElement("li");
 				    listHolderElement.appendChild(listElement);
 				    listElement.setAttribute("class", "namesOptionList");
-				    listElement.appendChild(document.createTextNode(previousSelection));
-							
-				}
-			}	
 				    listElement.appendChild(document.createTextNode(previousSelection));		    
 							
 				}
 			}	
-			$("#listHolderDiv").children('li:first-child').attr("id","currentli");
+			$("#listHolderDiv").children('li:first-child').attr("id","currentli");		
 	    } 
 	}
 	 
@@ -221,24 +164,23 @@ function listPreviousInputs(inputField){
 	$(".namesOptionList").click(function(){	
 		selectTextFromList(this);
 	}); 
-	}); 
 
 	/*li on hover styling*/ 
 	$(".namesOptionList").hover(function(){
-		$(this).attr("id","currentli");
+		if($("#currentli").length <= 0){
+			$(this).attr("id","currentli");
+		}
+		else{
+			$(this).css("background-color","rgb(229, 233, 237)");
+		}		
 	},function(){
-		$(this).removeAttr("id");
+	   if($(this).attr("id") == "currentli"){
+	   		$(this).removeAttr("id");
+	   }
+	   else{
+	   	   $(this).css("background-color","#F0F0F0");
+	   }		
 	}); 
-
-	/*li style*/
-	$("li").css({
-		"background-color": "#F0F0F0",
-	    "width": "auto",
-	    "padding": "5px 10px",
-	    "cursor": "pointer",
-	    "text-align": "left"
-    });
-
 }
 
 /*select a text from the listed options*/
@@ -319,63 +261,56 @@ document.onkeydown = function(event){
     }
 };
 
-$("li").css({
-		"background-color": "#F0F0F0",
-	    "width": "auto",
-	    "padding": "5px 10px",
-	    "cursor": "pointer",
-	    "text-align": "left"
-    });
-
-
 /*Up arrow handler*/
 function upArrowHandler(currentliElement){
-	if(currentliElement != "" && currentliElement != null && currentliElement !== "undefined"){
-        	previousOfcurrentliElement = $(currentliElement).prev('li');
-        	if($(previousOfcurrentliElement).is('li')){
-        		$(currentliElement).removeAttr("id");
-        		$(previousOfcurrentliElement).attr("id","currentli");
-        		var newpos = $(previousOfcurrentliElement).offset().top - $(currentliElement).offset().top;    
-                $('#listHolderDiv').scrollTop(newpos);
-        	}
-        	else{
-        		$(currentliElement).removeAttr("id");
-        		var lastLi = $("#listHolderDiv li").last();
-        		$(lastLi).attr("id","currentli");
-        		var newpos = $(lastLi).offset().top - $(currentliElement).offset().top;    
-                $('#listHolderDiv').scrollTop(newpos);
-        	}
+	$('#autofillInput').blur();
+    if(currentliElement != "" && currentliElement != null && currentliElement !== "undefined"){
+        previousOfcurrentliElement = $(currentliElement).prev('li');
+        if($(previousOfcurrentliElement).is('li')){
+        	$(currentliElement).removeAttr("id");
+        	if($("#currentli").length > 0){
+	    		var elemntHavingcurrentli = document.getElementById("currentli");
+	    		$(elemntHavingcurrentli).removeAttr("id");
+       	    }
+        	$(previousOfcurrentliElement).attr("id","currentli");
+        	var newpos = $(previousOfcurrentliElement).offset().top - $(currentliElement).offset().top;    
+            $('#listHolderDiv').scrollTop(newpos);
         }
-        $("#currentli").focus();
-
+        else{
+        	$(currentliElement).removeAttr("id");
+        	var lastLi = $("#listHolderDiv li").last();
+        	$(lastLi).attr("id","currentli");
+        	var newpos = $(lastLi).offset().top - $(currentliElement).offset().top;    
+            $('#listHolderDiv').scrollTop(newpos);
+        }
+    } 
+    
 }
 
 /*down arrow handler*/
-var m = 0;
-function downArrowHandler(currentliElement){
-	
+function downArrowHandler(currentliElement){	
+	$('#autofillInput').blur();
+	console.log("focus: "+document.activeElement.tagName);
     if(currentliElement != "" && currentliElement != null && currentliElement !== "undefined"){
-
        	nextOfCurrentliElement = $(currentliElement).next('li');
-
-       	  if($(nextOfCurrentliElement).is('li')){
-       	    $(window).click();
-       	    console.log("m:"+(m++));
+       	if($(nextOfCurrentliElement).is('li')){       	
        		$(currentliElement).removeAttr("id");
+       		if($("#currentli").length > 0){
+       			var elemntHavingcurrentli = document.getElementById("currentli");
+       			$(elemntHavingcurrentli).removeAttr("id");
+       		}
        		$(nextOfCurrentliElement).attr("id","currentli");
        		var newpos = $(nextOfCurrentliElement).offset().top - $(currentliElement).offset().top;    
             $('#listHolderDiv').scrollTop(newpos);
        	}
-       	else{   
+       	else{          		 
        	    $(currentliElement).removeAttr("id"); 
        	    var firtstLi = $("#listHolderDiv").children(":eq(0)");   		
         	$(firtstLi).attr("id","currentli");
         	var newpos = $(firtstLi).offset().top - $(currentliElement).offset().top;    
             $('#listHolderDiv').scrollTop(newpos);
-       	}
-       	
+       	}       	
     }
-
 }
 
 function enterKeyHandler(){	
@@ -386,6 +321,8 @@ function enterKeyHandler(){
         selectTextFromList($("#listHolderDiv").children(":eq(0)"));
     }
 }	
+
+
 
 
 
