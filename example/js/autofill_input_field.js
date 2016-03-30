@@ -258,6 +258,7 @@ document.onkeydown = function(event){
        }
     else if(event.keyCode == 27){ //escape key
         clearFields();
+        $('#autofillInput').blur();
     }
 };
 
