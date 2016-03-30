@@ -6,7 +6,7 @@
 
 [Demo] http://suryarajm.github.io/autofill_input_fields/example/
 
-#Installation
+##Installation
 
 	Download "autofill_input_field.css" and "autofill_input_field.js" from src folder. Include these files into your project.
 
@@ -22,5 +22,5 @@
 	    <div class="listHolder" id="listHolderDiv"></div>
 
 
-#Author
+##Author
 Surya Raj M (suryar@qburst.com)	
